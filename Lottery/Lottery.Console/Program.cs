@@ -12,31 +12,23 @@ namespace Lottery.Console
             var loginWindow = new LoginWindow(loginService);
             DrawBorder();
             loginWindow.Print();
+            System.Console.ReadKey();
         }
         public static void DrawBorder()
         {
-            System.Console.SetWindowSize(120, 30);
-            for (int lengthCount = 3; lengthCount < 27; lengthCount++)
+            System.Console.SetWindowSize(120, 30); //Content from 4th row
+
+            System.Console.BackgroundColor = ConsoleColor.Blue;
+            for (int top = 0; top < 3; top++)
             {
-                System.Console.SetCursorPosition(3, lengthCount);
-                System.Console.Write("|");
-                System.Console.SetCursorPosition(116, lengthCount);
-                System.Console.Write("|");
+                System.Console.SetCursorPosition(0, top);
+                System.Console.Write(new string(' ', 120));
             }
-            System.Console.SetCursorPosition(4, 2);
-            for (int widthCount = 3; widthCount < 59; widthCount++)
+            System.Console.BackgroundColor = ConsoleColor.Gray;
+            for (int top = 3; top < 29; top++)
             {
-                System.Console.Write("- ");
-            }
-            System.Console.SetCursorPosition(4, 6);
-            for (int widthCount = 3; widthCount < 59; widthCount++)
-            {
-                System.Console.Write("- ");
-            }
-            System.Console.SetCursorPosition(4, 27);
-            for (int widthCount = 3; widthCount < 59; widthCount++)
-            {
-                System.Console.Write("- ");
+                System.Console.SetCursorPosition(0, top);
+                System.Console.Write(new string(' ', 120));
             }
         }
     }

@@ -22,16 +22,27 @@ namespace Lottery.Console.ConsoleWindows
             string password = System.Console.ReadLine();
 
             if (LogInOrRegister())
-                _loginService.LogIn(username, password);
+            {
+                if (_loginService.LogIn(username, password))
+                {
+                    var dashboardWindow = new DashboardWindow(username);
+                    dashboardWindow.Print();
+                }
+            }
             //else
-                //TODO: Register(username, password);
+            //TODO: Register(username, password);
 
         }
 
-        private static void DrawMenu()
+        private void DrawMenu()
         {
-            System.Console.SetCursorPosition(5, 4);
-            System.Console.Write("Welcome to lottery!");
+            System.Console.ForegroundColor = ConsoleColor.White;
+            System.Console.BackgroundColor = ConsoleColor.Blue;
+            System.Console.SetCursorPosition(6, 1);
+            System.Console.Write("WELCOME TO LOTTERY!");
+
+            System.Console.ForegroundColor = ConsoleColor.Black;
+            System.Console.BackgroundColor = ConsoleColor.Gray;
             System.Console.SetCursorPosition(20, 14);
             System.Console.Write("Username:");
             System.Console.SetCursorPosition(20, 15);
@@ -54,13 +65,16 @@ namespace Lottery.Console.ConsoleWindows
             bool isLogin = true;
             while (true)
             {
+                System.Console.BackgroundColor = ConsoleColor.Gray;
+                System.Console.ForegroundColor = ConsoleColor.Black;
                 if (isLogin)
                 {
                     System.Console.SetCursorPosition(80, 25);
-                    System.Console.BackgroundColor = ConsoleColor.White;
-                    System.Console.ForegroundColor = ConsoleColor.Black;
+                    System.Console.BackgroundColor = ConsoleColor.Blue;
+                    System.Console.ForegroundColor = ConsoleColor.White;
                     System.Console.Write("LOGIN");
-                    System.Console.ResetColor();
+                    System.Console.BackgroundColor = ConsoleColor.Gray;
+                    System.Console.ForegroundColor = ConsoleColor.Black;
                     System.Console.SetCursorPosition(100, 25);
                     System.Console.Write("REGISTER");
                 }
@@ -69,10 +83,11 @@ namespace Lottery.Console.ConsoleWindows
                     System.Console.SetCursorPosition(80, 25);
                     System.Console.Write("LOGIN");
                     System.Console.SetCursorPosition(100, 25);
-                    System.Console.BackgroundColor = ConsoleColor.White;
-                    System.Console.ForegroundColor = ConsoleColor.Black;
+                    System.Console.BackgroundColor = ConsoleColor.Blue;
+                    System.Console.ForegroundColor = ConsoleColor.White;
                     System.Console.Write("REGISTER");
-                    System.Console.ResetColor();
+                    System.Console.BackgroundColor = ConsoleColor.Gray;
+                    System.Console.ForegroundColor = ConsoleColor.Black;
                 }
                 ConsoleKeyInfo cki = System.Console.ReadKey();
                 switch (cki.Key)
