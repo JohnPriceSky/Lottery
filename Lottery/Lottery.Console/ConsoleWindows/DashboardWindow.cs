@@ -25,19 +25,75 @@ namespace Lottery.Console.ConsoleWindows
             lotteryList.Add("Piłka do nadmuchania");
             lotteryList.Add("Złamany grosz");
             DisplayList(lotteryList);
+            ChooseLottery(lotteryList);
         }
 
-        private void DisplayList(List<string> lotteryList)
+        private void ChooseLottery(List<string> lotteryList)
         {
-            int left = 6, top = 4;
+            int index = 0;
+            while (true)
+            {
+                index %= lotteryList.Count;
+                if(index<0)
+                    DisplayList(lotteryList, index + lotteryList.Count);
+                else
+                    DisplayList(lotteryList, index);
+                ConsoleKeyInfo cki = System.Console.ReadKey();
+                switch (cki.Key)
+                {
+                    case ConsoleKey.DownArrow:
+                        index++;
+                        break;
+                    case ConsoleKey.UpArrow:
+                        index--;
+                        break;
+                    case ConsoleKey.Enter:
+                        return;
+                    default:
+                        break;
+                }
+                
+            }
+        }
+
+        private void DisplayList(List<string> lotteryList, int index = -1)
+        {
+            int top = 4;
             foreach (var item in lotteryList)
             {
-                top++;
-                System.Console.SetCursorPosition(left, top++);
-                System.Console.Write(item);
-                top++;
-                System.Console.SetCursorPosition(0, top++);
-                System.Console.Write(new string('-', 120));
+                if (index >= 0 && lotteryList[index] == item)
+                {
+                    System.Console.BackgroundColor = ConsoleColor.DarkGray;
+
+                    for (int i = 0; i < 3; i++)
+                    {
+                        System.Console.SetCursorPosition(0, top + i);
+                        System.Console.Write(new string(' ', 120));
+                    }
+                    top++;
+                    System.Console.SetCursorPosition(6, top);
+                    System.Console.Write(item);
+                    top++;
+                    top++;
+                    System.Console.SetCursorPosition(0, top++);
+                    System.Console.Write(new string('-', 120));
+                }
+                else
+                {
+                    System.Console.BackgroundColor = ConsoleColor.Gray;
+                    for (int i = 0; i < 3; i++)
+                    {
+                        System.Console.SetCursorPosition(0, top + i);
+                        System.Console.Write(new string(' ', 120));
+                    }
+                    top++;
+                    System.Console.SetCursorPosition(6, top);
+                    System.Console.Write(item);
+                    top++;
+                    top++;
+                    System.Console.SetCursorPosition(0, top++);
+                    System.Console.Write(new string('-', 120));
+                }
             }
         }
 

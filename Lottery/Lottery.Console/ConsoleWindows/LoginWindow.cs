@@ -15,12 +15,24 @@ namespace Lottery.Console.ConsoleWindows
 
         public void Print()
         {
-            //DrawBorder();
-            DrawMenu();
-            string username = System.Console.ReadLine();
-            System.Console.SetCursorPosition(55, 15);
-            string password = System.Console.ReadLine();
-
+            string username = "", password = "";
+            bool firstTime = true;
+            while (username.Trim().Equals("") || password.Trim().Equals(""))
+            {
+                DrawMenu();
+                if (!firstTime)
+                {
+                    System.Console.SetCursorPosition(40, 12);
+                    System.Console.ForegroundColor = ConsoleColor.Red;
+                    System.Console.Write("Write your username and/or password");
+                    System.Console.ForegroundColor = ConsoleColor.Black;
+                }
+                firstTime = false;
+                System.Console.SetCursorPosition(40, 15);
+                username = System.Console.ReadLine();
+                System.Console.SetCursorPosition(65, 15);
+                password = System.Console.ReadLine();
+            }
             if (LogInOrRegister())
             {
                 if (_loginService.LogIn(username, password))
@@ -43,20 +55,18 @@ namespace Lottery.Console.ConsoleWindows
 
             System.Console.ForegroundColor = ConsoleColor.Black;
             System.Console.BackgroundColor = ConsoleColor.Gray;
-            System.Console.SetCursorPosition(20, 14);
+            System.Console.SetCursorPosition(40, 14);
             System.Console.Write("Username:");
-            System.Console.SetCursorPosition(20, 15);
+            System.Console.SetCursorPosition(40, 15);
             System.Console.Write("______________");
-            System.Console.SetCursorPosition(55, 14);
+            System.Console.SetCursorPosition(65, 14);
             System.Console.Write("Password:");
-            System.Console.SetCursorPosition(55, 15);
+            System.Console.SetCursorPosition(65, 15);
             System.Console.Write("______________");
-            System.Console.SetCursorPosition(80, 25);
+            System.Console.SetCursorPosition(45, 25);
             System.Console.Write("LOGIN");
-            System.Console.SetCursorPosition(100, 25);
+            System.Console.SetCursorPosition(65, 25);
             System.Console.Write("REGISTER");
-
-            System.Console.SetCursorPosition(20, 15);
         }
 
         private static bool LogInOrRegister()
@@ -69,20 +79,20 @@ namespace Lottery.Console.ConsoleWindows
                 System.Console.ForegroundColor = ConsoleColor.Black;
                 if (isLogin)
                 {
-                    System.Console.SetCursorPosition(80, 25);
+                    System.Console.SetCursorPosition(45, 25);
                     System.Console.BackgroundColor = ConsoleColor.Blue;
                     System.Console.ForegroundColor = ConsoleColor.White;
                     System.Console.Write("LOGIN");
                     System.Console.BackgroundColor = ConsoleColor.Gray;
                     System.Console.ForegroundColor = ConsoleColor.Black;
-                    System.Console.SetCursorPosition(100, 25);
+                    System.Console.SetCursorPosition(65, 25);
                     System.Console.Write("REGISTER");
                 }
                 else
                 {
-                    System.Console.SetCursorPosition(80, 25);
+                    System.Console.SetCursorPosition(45, 25);
                     System.Console.Write("LOGIN");
-                    System.Console.SetCursorPosition(100, 25);
+                    System.Console.SetCursorPosition(65, 25);
                     System.Console.BackgroundColor = ConsoleColor.Blue;
                     System.Console.ForegroundColor = ConsoleColor.White;
                     System.Console.Write("REGISTER");
