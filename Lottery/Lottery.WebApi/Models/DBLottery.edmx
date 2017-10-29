@@ -1,0 +1,212 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="LotteryModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Lottery">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LotteryName" Type="nvarchar" MaxLength="255" />
+          <Property Name="Prize" Type="nvarchar" MaxLength="255" />
+          <Property Name="DrowTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LotteryUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="bigint" />
+          <Property Name="LotteryId" Type="bigint" />
+          <Property Name="IsWinner" Type="bit" Nullable="false" />
+          <Property Name="Prize" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="255" />
+          <Property Name="Password" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <Association Name="FK_LotteryUser">
+          <End Role="Lottery" Type="Self.Lottery" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="LotteryUser" Type="Self.LotteryUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Lottery">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LotteryUser">
+              <PropertyRef Name="LotteryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="LotteryUser" Type="Self.LotteryUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LotteryUser">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="LotteryModelStoreContainer">
+          <EntitySet Name="Lottery" EntityType="Self.Lottery" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LotteryUser" EntityType="Self.LotteryUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_LotteryUser" Association="Self.FK_LotteryUser">
+            <End Role="Lottery" EntitySet="Lottery" />
+            <End Role="LotteryUser" EntitySet="LotteryUser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User" Association="Self.FK_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="LotteryUser" EntitySet="LotteryUser" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="LotteryModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Lottery">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LotteryName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Prize" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DrowTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="LotteryUser" Relationship="Self.FK_LotteryUser" FromRole="Lottery" ToRole="LotteryUser" />
+        </EntityType>
+        <EntityType Name="LotteryUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int64" />
+          <Property Name="LotteryId" Type="Int64" />
+          <Property Name="IsWinner" Type="Boolean" Nullable="false" />
+          <Property Name="Prize" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Lottery" Relationship="Self.FK_LotteryUser" FromRole="LotteryUser" ToRole="Lottery" />
+          <NavigationProperty Name="User" Relationship="Self.FK_User" FromRole="LotteryUser" ToRole="User" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="LotteryUser" Relationship="Self.FK_User" FromRole="User" ToRole="LotteryUser" />
+        </EntityType>
+        <Association Name="FK_LotteryUser">
+          <End Role="Lottery" Type="Self.Lottery" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="LotteryUser" Type="Self.LotteryUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Lottery">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LotteryUser">
+              <PropertyRef Name="LotteryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="LotteryUser" Type="Self.LotteryUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LotteryUser">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="LotteryEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Lottery" EntityType="Self.Lottery" />
+          <EntitySet Name="LotteryUser" EntityType="Self.LotteryUser" />
+          <EntitySet Name="User" EntityType="Self.User" />
+          <AssociationSet Name="FK_LotteryUser" Association="Self.FK_LotteryUser">
+            <End Role="Lottery" EntitySet="Lottery" />
+            <End Role="LotteryUser" EntitySet="LotteryUser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User" Association="Self.FK_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="LotteryUser" EntitySet="LotteryUser" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="LotteryModelStoreContainer" CdmEntityContainer="LotteryEntities">
+          <EntitySetMapping Name="Lottery">
+            <EntityTypeMapping TypeName="LotteryModel.Lottery">
+              <MappingFragment StoreEntitySet="Lottery">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="LotteryName" ColumnName="LotteryName" />
+                <ScalarProperty Name="Prize" ColumnName="Prize" />
+                <ScalarProperty Name="DrowTime" ColumnName="DrowTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LotteryUser">
+            <EntityTypeMapping TypeName="LotteryModel.LotteryUser">
+              <MappingFragment StoreEntitySet="LotteryUser">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="LotteryId" ColumnName="LotteryId" />
+                <ScalarProperty Name="IsWinner" ColumnName="IsWinner" />
+                <ScalarProperty Name="Prize" ColumnName="Prize" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User">
+            <EntityTypeMapping TypeName="LotteryModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
