@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Lottery.Console.ConsoleWindows
 {
-    class DashboardWindow : IConsoleWindow
+    class DashboardWindow : ConsoleWindow, IConsoleWindow
     {
         private string username;
         private List<string> lotteryList = new List<string>();
@@ -34,7 +34,7 @@ namespace Lottery.Console.ConsoleWindows
             while (true)
             {
                 index %= lotteryList.Count;
-                if(index<0)
+                if (index < 0)
                     DisplayList(lotteryList, index + lotteryList.Count);
                 else
                     DisplayList(lotteryList, index);
@@ -48,52 +48,46 @@ namespace Lottery.Console.ConsoleWindows
                         index--;
                         break;
                     case ConsoleKey.Enter:
+                        int lotteryDetailIndex;
+                        if (index < 0)
+                            lotteryDetailIndex = index + lotteryList.Count;
+                        else
+                            lotteryDetailIndex = index;
+                        var lotteryDetailWindow = new LotteryDetailWindow(lotteryList[lotteryDetailIndex]);
+                        lotteryDetailWindow.Print();
+                        break;
+                    case ConsoleKey.Escape:
                         return;
                     default:
                         break;
                 }
-                
+
             }
         }
 
         private void DisplayList(List<string> lotteryList, int index = -1)
         {
+            ClearContent();
             int top = 4;
             foreach (var item in lotteryList)
             {
                 if (index >= 0 && lotteryList[index] == item)
-                {
                     System.Console.BackgroundColor = ConsoleColor.DarkGray;
-
-                    for (int i = 0; i < 3; i++)
-                    {
-                        System.Console.SetCursorPosition(0, top + i);
-                        System.Console.Write(new string(' ', 120));
-                    }
-                    top++;
-                    System.Console.SetCursorPosition(6, top);
-                    System.Console.Write(item);
-                    top++;
-                    top++;
-                    System.Console.SetCursorPosition(0, top++);
-                    System.Console.Write(new string('-', 120));
-                }
                 else
-                {
                     System.Console.BackgroundColor = ConsoleColor.Gray;
-                    for (int i = 0; i < 3; i++)
-                    {
-                        System.Console.SetCursorPosition(0, top + i);
-                        System.Console.Write(new string(' ', 120));
-                    }
-                    top++;
-                    System.Console.SetCursorPosition(6, top);
-                    System.Console.Write(item);
-                    top++;
-                    top++;
-                    System.Console.SetCursorPosition(0, top++);
-                    System.Console.Write(new string('-', 120));
+
+                for (int i = 0; i < 3; i++)
+                {
+                    System.Console.SetCursorPosition(0, top + i);
+                    System.Console.Write(new string(' ', 120));
                 }
+                top++;
+                System.Console.SetCursorPosition(6, top);
+                System.Console.Write(item);
+                top++;
+                top++;
+                System.Console.SetCursorPosition(0, top++);
+                System.Console.Write(new string('-', 120));
             }
         }
 
@@ -107,27 +101,6 @@ namespace Lottery.Console.ConsoleWindows
             System.Console.Write($"Logged as {username}");
             ClearContent();
             System.Console.ForegroundColor = ConsoleColor.Black;
-
-        }
-
-        private void ClearHeader()
-        {
-            System.Console.BackgroundColor = ConsoleColor.Blue;
-            for (int top = 0; top < 3; top++)
-            {
-                System.Console.SetCursorPosition(0, top);
-                System.Console.Write(new string(' ', 120));
-            }
-        }
-
-        private void ClearContent()
-        {
-            System.Console.BackgroundColor = ConsoleColor.Gray;
-            for (int top = 3; top < 29; top++)
-            {
-                System.Console.SetCursorPosition(0, top);
-                System.Console.Write(new string(' ', 120));
-            }
         }
     }
 }

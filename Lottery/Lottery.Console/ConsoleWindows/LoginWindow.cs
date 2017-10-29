@@ -4,7 +4,7 @@ using System;
 
 namespace Lottery.Console.ConsoleWindows
 {
-    class LoginWindow : IConsoleWindow
+    class LoginWindow : ConsoleWindow, IConsoleWindow
     {
         private readonly ILoginService _loginService;
 
@@ -15,6 +15,8 @@ namespace Lottery.Console.ConsoleWindows
 
         public void Print()
         {
+            ClearHeader();
+            ClearContent();
             string username = "", password = "";
             bool firstTime = true;
             while (username.Trim().Equals("") || password.Trim().Equals(""))
