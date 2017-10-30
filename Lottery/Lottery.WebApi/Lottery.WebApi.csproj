@@ -147,7 +147,10 @@
     <Compile Include="Controllers\LotteryController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="DTO\IsLoggedInDTO.cs" />
+    <Compile Include="DTO\LotteryDetailsDTO.cs" />
     <Compile Include="DTO\LotteryDTO.cs" />
+    <Compile Include="DTO\LotteryUserDTO.cs" />
+    <Compile Include="DTO\SignInDTO.cs" />
     <Compile Include="DTO\UserDTO.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
