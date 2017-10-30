@@ -1,4 +1,5 @@
 ﻿using Lottery.Application.Abstract;
+using Lottery.Application.Services;
 using Lottery.Console.Abstract;
 using System;
 
@@ -15,37 +16,118 @@ namespace Lottery.Console.ConsoleWindows
 
         public void Print()
         {
-            ClearHeader();
-            ClearContent();
-            string username = "", password = "";
-            bool firstTime = true;
-            while (username.Trim().Equals("") || password.Trim().Equals(""))
+            while (true)
             {
-                DrawMenu();
-                if (!firstTime)
+                ClearHeader();
+                ClearContent();
+                string username = "", password = "";
+                bool firstTime = true;
+                while (username.Trim().Equals("") || password.Trim().Equals(""))
                 {
-                    System.Console.SetCursorPosition(40, 12);
-                    System.Console.ForegroundColor = ConsoleColor.Red;
-                    System.Console.Write("Write your username and/or password");
-                    System.Console.ForegroundColor = ConsoleColor.Black;
+                    DrawMenu();
+                    if (!firstTime)
+                    {
+                        System.Console.SetCursorPosition(40, 12);
+                        System.Console.ForegroundColor = ConsoleColor.Red;
+                        System.Console.Write("Write your username and/or password");
+                        System.Console.ForegroundColor = ConsoleColor.Black;
+                    }
+                    firstTime = false;
+                    System.Console.SetCursorPosition(40, 15);
+                    username = System.Console.ReadLine();
+                    System.Console.SetCursorPosition(65, 15);
+                    password = System.Console.ReadLine();
                 }
-                firstTime = false;
-                System.Console.SetCursorPosition(40, 15);
-                username = System.Console.ReadLine();
-                System.Console.SetCursorPosition(65, 15);
-                password = System.Console.ReadLine();
-            }
-            if (LogInOrRegister())
-            {
-                if (_loginService.LogIn(username, password))
+                var decision = LogInOrRegister();
+                if (decision == 0)
                 {
-                    var dashboardWindow = new DashboardWindow(username);
-                    dashboardWindow.Print();
+                    if (_loginService.LogIn(username, password).Result)
+                    {
+                        var lotteryService = new LotteryService();
+                        var dashboardWindow = new DashboardWindow(username);
+                        dashboardWindow.Print();
+                    }
+                    else
+                    {
+                        for (int top = 9; top < 18; top++)
+                        {
+                            System.Console.SetCursorPosition(30, top);
+                            System.Console.BackgroundColor = ConsoleColor.DarkCyan;
+                            System.Console.Write(new string(' ', 60));
+                        }
+                        System.Console.SetCursorPosition(50, 11);
+                        System.Console.Write("You are not logged in");
+                        System.Console.SetCursorPosition(55, 15);
+                        System.Console.BackgroundColor = ConsoleColor.Blue;
+                        System.Console.ForegroundColor = ConsoleColor.White;
+                        System.Console.Write("<< GO BACK");
+                        System.Console.ReadKey();
+                        System.Console.ForegroundColor = ConsoleColor.Black;
+                    }
+                }
+                else if (decision == 1)
+                {
+                    if (_loginService.LogInAsAdmin(username, password).Result)
+                    {
+                        var adminWindow = new AdminWindow(username);
+                        adminWindow.Print();
+                    }
+                    else
+                    {
+                        for (int top = 9; top < 18; top++)
+                        {
+                            System.Console.SetCursorPosition(30, top);
+                            System.Console.BackgroundColor = ConsoleColor.DarkCyan;
+                            System.Console.Write(new string(' ', 60));
+                        }
+                        System.Console.SetCursorPosition(50, 11);
+                        System.Console.Write("You are not logged in");
+                        System.Console.SetCursorPosition(55, 15);
+                        System.Console.BackgroundColor = ConsoleColor.Blue;
+                        System.Console.ForegroundColor = ConsoleColor.White;
+                        System.Console.Write("<< GO BACK");
+                        System.Console.ReadKey();
+                        System.Console.ForegroundColor = ConsoleColor.Black;
+                    }
+                }
+                else
+                {
+                    if (_loginService.Register(username, password).Result)
+                    {
+                        for (int top = 9; top < 18; top++)
+                        {
+                            System.Console.SetCursorPosition(30, top);
+                            System.Console.BackgroundColor = ConsoleColor.DarkCyan;
+                            System.Console.Write(new string(' ', 60));
+                        }
+                        System.Console.SetCursorPosition(55, 11);
+                        System.Console.Write("You are registered");
+                        System.Console.SetCursorPosition(55, 15);
+                        System.Console.BackgroundColor = ConsoleColor.Blue;
+                        System.Console.ForegroundColor = ConsoleColor.White;
+                        System.Console.Write("<< GO BACK");
+                        System.Console.ReadKey();
+                        System.Console.ForegroundColor = ConsoleColor.Black;
+                    }
+                    else
+                    {
+                        for (int top = 9; top < 18; top++)
+                        {
+                            System.Console.SetCursorPosition(30, top);
+                            System.Console.BackgroundColor = ConsoleColor.DarkCyan;
+                            System.Console.Write(new string(' ', 60));
+                        }
+                        System.Console.SetCursorPosition(50, 11);
+                        System.Console.Write("Register error");
+                        System.Console.SetCursorPosition(55, 15);
+                        System.Console.BackgroundColor = ConsoleColor.Blue;
+                        System.Console.ForegroundColor = ConsoleColor.White;
+                        System.Console.Write("<< GO BACK");
+                        System.Console.ReadKey();
+                        System.Console.ForegroundColor = ConsoleColor.Black;
+                    }
                 }
             }
-            //else
-            //TODO: Register(username, password);
-
         }
 
         private void DrawMenu()
@@ -65,53 +147,73 @@ namespace Lottery.Console.ConsoleWindows
             System.Console.Write("Password:");
             System.Console.SetCursorPosition(65, 15);
             System.Console.Write("______________");
-            System.Console.SetCursorPosition(45, 25);
+            System.Console.SetCursorPosition(40, 25);
             System.Console.Write("LOGIN");
-            System.Console.SetCursorPosition(65, 25);
+            System.Console.SetCursorPosition(50, 25);
+            System.Console.Write("LOGIN AS ADMIN");
+            System.Console.SetCursorPosition(70, 25);
             System.Console.Write("REGISTER");
+            System.Console.CursorVisible = true;
         }
 
-        private static bool LogInOrRegister()
+        private static int LogInOrRegister()
         {
             System.Console.CursorVisible = false;
-            bool isLogin = true;
+            int i = 0;
             while (true)
             {
                 System.Console.BackgroundColor = ConsoleColor.Gray;
                 System.Console.ForegroundColor = ConsoleColor.Black;
-                if (isLogin)
+                if (i == 0)
                 {
-                    System.Console.SetCursorPosition(45, 25);
                     System.Console.BackgroundColor = ConsoleColor.Blue;
                     System.Console.ForegroundColor = ConsoleColor.White;
+                    System.Console.SetCursorPosition(40, 25);
                     System.Console.Write("LOGIN");
                     System.Console.BackgroundColor = ConsoleColor.Gray;
                     System.Console.ForegroundColor = ConsoleColor.Black;
-                    System.Console.SetCursorPosition(65, 25);
+                    System.Console.SetCursorPosition(50, 25);
+                    System.Console.Write("LOGIN AS ADMIN");
+                    System.Console.SetCursorPosition(70, 25);
+                    System.Console.Write("REGISTER");
+                }
+                else if (i == 1)
+                {
+                    System.Console.SetCursorPosition(40, 25);
+                    System.Console.Write("LOGIN");
+                    System.Console.BackgroundColor = ConsoleColor.Blue;
+                    System.Console.ForegroundColor = ConsoleColor.White;
+                    System.Console.SetCursorPosition(50, 25);
+                    System.Console.Write("LOGIN AS ADMIN");
+                    System.Console.BackgroundColor = ConsoleColor.Gray;
+                    System.Console.ForegroundColor = ConsoleColor.Black;
+                    System.Console.SetCursorPosition(70, 25);
                     System.Console.Write("REGISTER");
                 }
                 else
                 {
-                    System.Console.SetCursorPosition(45, 25);
-                    System.Console.Write("LOGIN");
-                    System.Console.SetCursorPosition(65, 25);
-                    System.Console.BackgroundColor = ConsoleColor.Blue;
-                    System.Console.ForegroundColor = ConsoleColor.White;
-                    System.Console.Write("REGISTER");
                     System.Console.BackgroundColor = ConsoleColor.Gray;
                     System.Console.ForegroundColor = ConsoleColor.Black;
+                    System.Console.SetCursorPosition(40, 25);
+                    System.Console.Write("LOGIN");
+                    System.Console.SetCursorPosition(50, 25);
+                    System.Console.Write("LOGIN AS ADMIN");
+                    System.Console.BackgroundColor = ConsoleColor.Blue;
+                    System.Console.ForegroundColor = ConsoleColor.White;
+                    System.Console.SetCursorPosition(70, 25);
+                    System.Console.Write("REGISTER");
                 }
                 ConsoleKeyInfo cki = System.Console.ReadKey();
                 switch (cki.Key)
                 {
                     case ConsoleKey.LeftArrow:
-                        isLogin = true;
+                        if (i > 0) i--;
                         break;
                     case ConsoleKey.RightArrow:
-                        isLogin = false;
+                        if (i < 3) i++;
                         break;
                     case ConsoleKey.Enter:
-                        return isLogin;
+                        return i;
                     default:
                         break;
                 }

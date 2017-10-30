@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstract\IConsoleWindow.cs" />
+    <Compile Include="ConsoleWindows\AdminWindow.cs" />
     <Compile Include="ConsoleWindows\DashboardWindow.cs" />
     <Compile Include="ConsoleWindows\LoginWindow.cs" />
     <Compile Include="ConsoleWindows\LotteryDetailWindow.cs" />

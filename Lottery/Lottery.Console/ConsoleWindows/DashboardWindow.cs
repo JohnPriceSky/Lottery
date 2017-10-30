@@ -1,4 +1,7 @@
-﻿using Lottery.Console.Abstract;
+﻿using Lottery.Application.Abstract;
+using Lottery.Application.DTO;
+using Lottery.Application.Services;
+using Lottery.Console.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,25 +13,24 @@ namespace Lottery.Console.ConsoleWindows
     class DashboardWindow : ConsoleWindow, IConsoleWindow
     {
         private string username;
-        private List<string> lotteryList = new List<string>();
+        private List<LotteryDTO> lotteryList;
+        private LotteryService _lotteryService;
 
         public DashboardWindow(string username)
         {
             this.username = username;
+            _lotteryService = new LotteryService();
         }
 
         public void Print()
         {
             DrawMenu();
-            lotteryList.Add("Graj o talon");
-            lotteryList.Add("Wygraj tapczan na raty");
-            lotteryList.Add("Piłka do nadmuchania");
-            lotteryList.Add("Złamany grosz");
+            lotteryList = _lotteryService.GetLotteries().Result.ToList();
             DisplayList(lotteryList);
             ChooseLottery(lotteryList);
         }
 
-        private void ChooseLottery(List<string> lotteryList)
+        private void ChooseLottery(List<LotteryDTO> lotteryList)
         {
             int index = 0;
             while (true)
@@ -65,7 +67,7 @@ namespace Lottery.Console.ConsoleWindows
             }
         }
 
-        private void DisplayList(List<string> lotteryList, int index = -1)
+        private void DisplayList(List<LotteryDTO> lotteryList, int index = -1)
         {
             ClearContent();
             int top = 4;
@@ -83,7 +85,11 @@ namespace Lottery.Console.ConsoleWindows
                 }
                 top++;
                 System.Console.SetCursorPosition(6, top);
-                System.Console.Write(item);
+                System.Console.Write(item.LotteryName);
+                System.Console.SetCursorPosition(50, top);
+                System.Console.Write("Prize: " + item.Prize);
+                System.Console.SetCursorPosition(70, top);
+                System.Console.Write("DrowTime: " + item.DrowTime);
                 top++;
                 top++;
                 System.Console.SetCursorPosition(0, top++);

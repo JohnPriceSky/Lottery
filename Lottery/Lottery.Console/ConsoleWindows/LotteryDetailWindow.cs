@@ -1,4 +1,5 @@
-﻿using Lottery.Console.Abstract;
+﻿using Lottery.Application.DTO;
+using Lottery.Console.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,9 @@ namespace Lottery.Console.ConsoleWindows
 {
     class LotteryDetailWindow : ConsoleWindow, IConsoleWindow
     {
-        private string lottery;
+        private LotteryDTO lottery;
 
-        public LotteryDetailWindow(string lottery)
+        public LotteryDetailWindow(LotteryDTO lottery)
         {
             this.lottery = lottery;
         }
@@ -25,7 +26,11 @@ namespace Lottery.Console.ConsoleWindows
         private void PrintDetail()
         {
             System.Console.SetCursorPosition(6, 4);
-            System.Console.Write(lottery);
+            System.Console.Write(lottery.LotteryName);
+            System.Console.SetCursorPosition(6, 5);
+            System.Console.Write(lottery.Prize);
+            System.Console.SetCursorPosition(6, 6);
+            System.Console.Write(lottery.DrowTime);
             //More data
 
             System.Console.SetCursorPosition(6, 25);
