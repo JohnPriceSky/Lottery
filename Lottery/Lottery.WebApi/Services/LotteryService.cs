@@ -6,6 +6,8 @@ using System.Web;
 using Lottery.WebApi.DTO;
 using System.Threading.Tasks;
 using Lottery.WebApi.Models;
+using Microsoft.AspNet.SignalR;
+using Lottery.WebApi.Hubs;
 
 namespace Lottery.WebApi.Services
 {
@@ -69,6 +71,9 @@ namespace Lottery.WebApi.Services
 
                 _lotteryEntities.Lottery.Add(newLottery);
                 await _lotteryEntities.SaveChangesAsync();
+
+                //var notificationHubContext = GlobalHost.ConnectionManager.GetHubContext<NotificationHub>();
+                //notificationHubContext.Clients.All.Notification("dupa");
 
                 return true;
             }
