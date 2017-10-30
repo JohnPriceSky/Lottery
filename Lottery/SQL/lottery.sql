@@ -11,6 +11,19 @@ ADD CONSTRAINT [PK_User]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
+-- Admin
+CREATE TABLE [dbo].[Admin] (
+    [Id] bigint IDENTITY(1,1) NOT NULL,
+    [UserName] nvarchar(255),
+    [Password] nvarchar(255)
+);
+GO
+
+ALTER TABLE [dbo].[Admin]
+ADD CONSTRAINT [PK_Admin]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
 -- Lottery
 CREATE TABLE [dbo].[Lottery] (
     [Id] bigint IDENTITY(1,1) NOT NULL,

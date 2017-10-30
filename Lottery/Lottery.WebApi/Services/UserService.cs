@@ -15,11 +15,24 @@ namespace Lottery.WebApi.Services
             _lotteryEntities = lotteryEntities;
         }
 
-        public async Task<bool> IsUserExists(UserDTO user)
+        public async Task<IsLoggedInDTO> IsUserExists(UserDTO user)
         {
             if (!string.IsNullOrEmpty(user.UserName) && !string.IsNullOrEmpty(user.Password))
             {
-                User lotteryUser = await IsUserExistsInDB(user);
+                var lotteryUser = await GetUserFromDB(user);
+
+                if (lotteryUser != null)
+                    return new IsLoggedInDTO { Id = lotteryUser.Id, IsLeggedIn = true };
+            }
+
+            return new IsLoggedInDTO { Id = int.MinValue, IsLeggedIn = false };
+        }
+
+        public async Task<bool> IsAdmin(UserDTO user)
+        {
+            if (!string.IsNullOrEmpty(user.UserName) && !string.IsNullOrEmpty(user.Password))
+            {
+                var lotteryUser = await GetAdminFromDB(user);
 
                 if (lotteryUser != null)
                     return true;
@@ -43,10 +56,16 @@ namespace Lottery.WebApi.Services
             return false;
         }
 
-        private async Task<User> IsUserExistsInDB(UserDTO user)
+        private async Task<User> GetUserFromDB(UserDTO user)
         {
             return _lotteryEntities.User.AsNoTracking()
                 .FirstOrDefault(u => u.UserName == user.UserName && u.Password == user.Password);
+        }
+
+        private async Task<Admin> GetAdminFromDB(UserDTO user)
+        {
+            return _lotteryEntities.Admin.AsNoTracking()
+                .FirstOrDefault(a => a.UserName == user.UserName && a.Password == user.Password);
         }
 
         private async Task RegisterUser(UserDTO user)

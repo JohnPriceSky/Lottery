@@ -64,6 +64,7 @@ namespace Lottery.WebApi.App_Start
             kernel.Bind<LotteryEntities>().ToSelf().InRequestScope();
 
             kernel.Bind<IUserService>().To<UserService>().InRequestScope();
+            kernel.Bind<ILotteryService>().To<LotteryService>().InRequestScope();
         }
     }
 }

@@ -28,5 +28,6 @@ namespace Lottery.WebApi.Models
         public virtual DbSet<Lottery> Lottery { get; set; }
         public virtual DbSet<LotteryUser> LotteryUser { get; set; }
         public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<Admin> Admin { get; set; }
     }
 }
