@@ -25,6 +25,12 @@ namespace Lottery.WebApi.Controllers
             return await _lotteryService.GetLotteries();
         }
 
+        [HttpGet, Route("lottery")]
+        public async Task<LotteryDetailsDTO> GetLotteryDetails([FromUri] long lotteryId)
+        {
+            return await _lotteryService.GetLottery(lotteryId);
+        }
+
         [HttpPost, Route("addLottery")]
         public async Task<bool> AddLottery([FromBody] LotteryDTO lottery)
         {
@@ -34,13 +40,22 @@ namespace Lottery.WebApi.Controllers
             return await _lotteryService.AddLottery(lottery);
         }
 
-        [HttpPost, Route("signIn")]
-        public async Task<bool> SignInToLottery([FromBody]long userId, [FromBody]long lotteryId)
+        [HttpDelete, Route("deleteLottery")]
+        public async Task<bool> DeleteLottery([FromBody] long lotteryId)
         {
-            if (userId < 1 && lotteryId < 1)
+            if (lotteryId < 1)
                 return false;
 
-            return await _lotteryService.AddLotteryUserAndResponseResult(userId, lotteryId);
+            return await _lotteryService.DeleteLottery(lotteryId);
+        }
+
+        [HttpPost, Route("signIn")]
+        public async Task<bool> SignInToLottery([FromBody] SignInDTO signInData)
+        {
+            if (signInData.UserId < 1 && signInData.LotteryId < 1)
+                return false;
+
+            return await _lotteryService.AddLotteryUserAndResponseResult(signInData.UserId, signInData.LotteryId);
         }
     }
 }
