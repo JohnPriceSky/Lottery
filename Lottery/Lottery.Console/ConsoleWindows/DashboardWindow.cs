@@ -15,9 +15,11 @@ namespace Lottery.Console.ConsoleWindows
         private string username;
         private List<LotteryDTO> lotteryList;
         private LotteryService _lotteryService;
+        private long userId;
 
-        public DashboardWindow(string username)
+        public DashboardWindow(long userId, string username)
         {
+            this.userId = userId;
             this.username = username;
             _lotteryService = new LotteryService();
         }
@@ -55,7 +57,7 @@ namespace Lottery.Console.ConsoleWindows
                             lotteryDetailIndex = index + lotteryList.Count;
                         else
                             lotteryDetailIndex = index;
-                        var lotteryDetailWindow = new LotteryDetailWindow(lotteryList[lotteryDetailIndex]);
+                        var lotteryDetailWindow = new LotteryDetailWindow(userId, lotteryList[lotteryDetailIndex].Id, _lotteryService);
                         lotteryDetailWindow.Print();
                         break;
                     case ConsoleKey.Escape:

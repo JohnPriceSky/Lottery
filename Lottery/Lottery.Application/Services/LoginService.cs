@@ -12,7 +12,7 @@ namespace Lottery.Application.Services
 {
     public class LoginService : ILoginService
     {
-        public async Task<bool> LogIn(string username, string password)
+        public async Task<long> LogIn(string username, string password)
         {
             using (var httpClient = new HttpClient())
             {
@@ -28,7 +28,7 @@ namespace Lottery.Application.Services
                 var response = await (await httpClient.PostAsync(uri, content)).Content.ReadAsStringAsync();
 
                 var user = JsonConvert.DeserializeObject<UserDTO>(response);
-                return user.IsLoggedIn;
+                return user.Id;
             }
         }
 

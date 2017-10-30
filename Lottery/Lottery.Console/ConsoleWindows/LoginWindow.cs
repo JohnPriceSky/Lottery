@@ -41,10 +41,11 @@ namespace Lottery.Console.ConsoleWindows
                 var decision = LogInOrRegister();
                 if (decision == 0)
                 {
-                    if (_loginService.LogIn(username, password).Result)
+                    long userId = _loginService.LogIn(username, password).Result;
+                    if (userId != 0)
                     {
                         var lotteryService = new LotteryService();
-                        var dashboardWindow = new DashboardWindow(username);
+                        var dashboardWindow = new DashboardWindow(userId, username);
                         dashboardWindow.Print();
                     }
                     else

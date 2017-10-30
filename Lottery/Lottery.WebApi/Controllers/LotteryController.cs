@@ -40,7 +40,7 @@ namespace Lottery.WebApi.Controllers
             return await _lotteryService.AddLottery(lottery);
         }
 
-        [HttpDelete, Route("deleteLottery")]
+        [HttpPost, Route("deleteLottery")]
         public async Task<bool> DeleteLottery([FromBody] long lotteryId)
         {
             if (lotteryId < 1)

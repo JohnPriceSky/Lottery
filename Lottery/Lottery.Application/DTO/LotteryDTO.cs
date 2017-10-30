@@ -8,7 +8,7 @@ namespace Lottery.Application.DTO
 {
     public class LotteryDTO
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string LotteryName { get; set; }
         public string Prize { get; set; }
         public DateTime DrowTime { get; set; }

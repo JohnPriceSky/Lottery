@@ -1,4 +1,6 @@
-﻿using Lottery.Application.DTO;
+﻿using Lottery.Application.Abstract;
+using Lottery.Application.DTO;
+using Lottery.Application.Services;
 using Lottery.Console.Abstract;
 using System;
 using System.Collections.Generic;
@@ -10,11 +12,17 @@ namespace Lottery.Console.ConsoleWindows
 {
     class LotteryDetailWindow : ConsoleWindow, IConsoleWindow
     {
-        private LotteryDTO lottery;
+        private LotteryDetailsDTO lotteryDetails;
+        private ILotteryService _lotteryService;
+        private long userId;
+        private long lotteryId;
 
-        public LotteryDetailWindow(LotteryDTO lottery)
+        public LotteryDetailWindow(long userId, long lotteryId, ILotteryService lotteryService)
         {
-            this.lottery = lottery;
+            this.lotteryId = lotteryId;
+            this.userId = userId;
+            _lotteryService = lotteryService;
+            lotteryDetails = _lotteryService.GetLotteryDetails(lotteryId).Result;
         }
 
         public void Print()
@@ -26,11 +34,21 @@ namespace Lottery.Console.ConsoleWindows
         private void PrintDetail()
         {
             System.Console.SetCursorPosition(6, 4);
-            System.Console.Write(lottery.LotteryName);
+            System.Console.Write(lotteryDetails.LotteryProperties.LotteryName);
             System.Console.SetCursorPosition(6, 5);
-            System.Console.Write(lottery.Prize);
+            System.Console.Write(lotteryDetails.LotteryProperties.Prize);
             System.Console.SetCursorPosition(6, 6);
-            System.Console.Write(lottery.DrowTime);
+            System.Console.Write(lotteryDetails.LotteryProperties.DrowTime);
+
+            var i = 8;
+            foreach (var user in lotteryDetails.UsersList)
+            {
+                System.Console.SetCursorPosition(6, i);
+                System.Console.Write(user.UserName);
+                i++;
+            }
+            System.Console.SetCursorPosition(6, 8);
+
             //More data
 
             System.Console.SetCursorPosition(6, 25);
@@ -39,6 +57,7 @@ namespace Lottery.Console.ConsoleWindows
             System.Console.Write("SIGN UP");
             if (GoBackOrSignUp())
             {
+                if(_lotteryService.SignInToLottery(userId, lotteryId).Result);
                 for (int top = 9; top < 18; top++)
                 {
                     System.Console.SetCursorPosition(30, top);

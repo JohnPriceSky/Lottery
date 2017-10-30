@@ -11,6 +11,9 @@ namespace Lottery.Application.Abstract
     {
         Task<IEnumerable<LotteryDTO>> GetLotteries();
         Task<bool> AddLottery(LotteryDTO lottery);
+        Task<bool> DeleteLottery(long id);
+        Task<LotteryDetailsDTO> GetLotteryDetails(long id);
+        Task<bool> SignInToLottery(long userId, long lotteryId);
 
     }
 }
