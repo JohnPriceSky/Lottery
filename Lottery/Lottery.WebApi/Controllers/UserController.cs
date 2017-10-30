@@ -18,7 +18,7 @@ namespace Lottery.WebApi.Controllers
         public async Task<IsLoggedInDTO> LoginIn([FromBody] UserDTO user)
         {
             if (user == null)
-                return new IsLoggedInDTO { Id = int.MinValue, IsLeggedIn = false };
+                return new IsLoggedInDTO { Id = int.MinValue, IsLoggedIn = false };
 
             return await _loginService.IsUserExists(user);
         }

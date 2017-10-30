@@ -22,10 +22,10 @@ namespace Lottery.WebApi.Services
                 var lotteryUser = await GetUserFromDB(user);
 
                 if (lotteryUser != null)
-                    return new IsLoggedInDTO { Id = lotteryUser.Id, IsLeggedIn = true };
+                    return new IsLoggedInDTO { Id = lotteryUser.Id, IsLoggedIn = true };
             }
 
-            return new IsLoggedInDTO { Id = int.MinValue, IsLeggedIn = false };
+            return new IsLoggedInDTO { Id = int.MinValue, IsLoggedIn = false };
         }
 
         public async Task<bool> IsAdmin(UserDTO user)

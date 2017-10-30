@@ -1,5 +1,6 @@
 ﻿using Lottery.Application.Services;
 using Lottery.Console.ConsoleWindows;
+using System;
 
 namespace Lottery.Console
 {
@@ -8,7 +9,6 @@ namespace Lottery.Console
         static void Main(string[] args)
         {
             var loginService = new LoginService();
-
             var loginWindow = new LoginWindow(loginService);
             loginWindow.Print();
         }
