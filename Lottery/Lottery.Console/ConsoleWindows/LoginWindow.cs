@@ -42,7 +42,7 @@ namespace Lottery.Console.ConsoleWindows
                 if (decision == 0)
                 {
                     long userId = _loginService.LogIn(username, password).Result;
-                    if (userId != 0)
+                    if (userId > 0)
                     {
                         var lotteryService = new LotteryService();
                         var dashboardWindow = new DashboardWindow(userId, username);
