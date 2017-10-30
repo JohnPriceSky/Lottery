@@ -55,17 +55,18 @@ namespace Lottery.Console.ConsoleWindows
                             lotteryDetailIndex = index + lotteryList.Count;
                         else
                             lotteryDetailIndex = index;
-                        //var lotteryDetailWindow = new LotteryDetailWindow(lotteryList[lotteryDetailIndex].Id, _lotteryService);
-                        //lotteryDetailWindow.Print();
                         break;
                     case ConsoleKey.A:
                         AddNewLottery(lotteryList);
+                        lotteryList = _lotteryService.GetLotteries().Result.ToList();
                         break;
                     case ConsoleKey.D:
                         if (index < 0)
-                            _lotteryService.DeleteLottery(lotteryList[index + lotteryList.Count].Id);
+                            _lotteryService.DeleteLottery(lotteryList[index + lotteryList.Count].Id).Wait();
                         else
-                            _lotteryService.DeleteLottery(lotteryList[index].Id);
+                            _lotteryService.DeleteLottery(lotteryList[index].Id).Wait();
+
+                        lotteryList = _lotteryService.GetLotteries().Result.ToList();
                         break;
                     case ConsoleKey.Escape:
                         return;
