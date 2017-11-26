@@ -1,0 +1,19 @@
+﻿<h2>DASHBOARD</h2>
+<h2>Logged as {{username}}</h2>
+
+<table class="table table-striped">
+    <tbody>
+        <tr ng-repeat="lottery in lotteries">
+            <td>{{lottery.lotteryName}}</td>
+            <td>Prize: {{lottery.prize}}</td>
+            <td>Drow time: {{lottery.drowTime.toString()}}</td>
+            <td><a ng-click="removeLottery(lottery.id)" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i> REMOVE</a></td>
+        </tr>
+        <tr>
+            <td><input ng-model="lotteryName" type="text" /></td>
+            <td><input ng-model="prize" type="text" /></td>
+            <td><input ng-model="drowTime" type="datetime" /></td>
+            <td><a ng-click="addLottery()" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i> ADD</a></td>
+        </tr>
+    </tbody>
+</table>

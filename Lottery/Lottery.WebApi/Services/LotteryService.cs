@@ -93,6 +93,9 @@ namespace Lottery.WebApi.Services
 
         public async Task<bool> AddLotteryUserAndResponseResult(long userId, long lotteryId)
         {
+            if (_lotteryEntities.LotteryUser.AsNoTracking().Any(lu => lu.UserId == userId && lu.LotteryId == lotteryId))
+                return false;
+
             var lotteryUser = new LotteryUser
             {
                 UserId = userId,

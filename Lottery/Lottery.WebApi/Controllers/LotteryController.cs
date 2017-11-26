@@ -7,9 +7,11 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace Lottery.WebApi.Controllers
 {
+    [EnableCors(origins: "http://localhost:52236", headers: "*", methods: "*")]
     public class LotteryController : ApiController
     {
         private readonly ILotteryService _lotteryService;

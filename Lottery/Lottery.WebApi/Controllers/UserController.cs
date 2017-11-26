@@ -2,9 +2,11 @@
 using Lottery.WebApi.IServices;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace Lottery.WebApi.Controllers
 {
+    [EnableCors(origins: "http://localhost:52236", headers: "*", methods: "*")]
     public class UserController : ApiController
     {
         private readonly IUserService _loginService;

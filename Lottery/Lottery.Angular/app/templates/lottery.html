@@ -1,0 +1,7 @@
+﻿<h2>LOTTERY DETAIL</h2>
+<h2>Logged as {{username}}</h2>
+<p>{{lotteryDetails.lotteryProperties.lotteryName}}</p>
+<p>{{lotteryDetails.lotteryProperties.prize}}</p>
+<p>{{lotteryDetails.lotteryProperties.drowTime.toString()}}</p><!--FIND OUT WHY NOT DISPLAY-->
+<p ng-repeat="user in lotteryDetails.usersList">{{user.userName}} Has won? {{user.isWinner ? 'Yes' : 'No'}}</p>
+<a ng-click="signUp(lotteryDetails.lotteryProperties.id)" class="btn btn-success"><i class="glyphicon glyphicon-send"></i> SIGN UP</a>

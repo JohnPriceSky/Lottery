@@ -1,0 +1,13 @@
+﻿<h2>DASHBOARD</h2>
+<h2>Logged as {{username}}</h2>
+
+<table class="table table-striped">
+    <tbody>
+        <tr ng-repeat="lottery in lotteries">
+            <td>{{lottery.lotteryName}}</td>
+            <td>Prize: {{lottery.prize}}</td>
+            <td>Drow time: {{lottery.drowTime.toString()}}</td>
+            <td><a ng-click="showDetails(lottery.id)" class="btn btn-primary">DETAILS</a></td>
+        </tr>
+    </tbody>
+</table>
