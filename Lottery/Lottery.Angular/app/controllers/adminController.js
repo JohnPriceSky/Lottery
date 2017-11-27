@@ -1,4 +1,4 @@
-﻿app.controller('admin', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+﻿app.controller('admin', ['$scope', '$http', '$location', 'parseDateFilter', function ($scope, $http, $location) {
     $scope.username = userName;
     $scope.lotteries = {};
 

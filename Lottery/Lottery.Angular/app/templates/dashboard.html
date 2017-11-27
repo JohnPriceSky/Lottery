@@ -1,13 +1,38 @@
-﻿<h2>DASHBOARD</h2>
-<h2>Logged as {{username}}</h2>
-
-<table class="table table-striped">
-    <tbody>
-        <tr ng-repeat="lottery in lotteries">
-            <td>{{lottery.lotteryName}}</td>
-            <td>Prize: {{lottery.prize}}</td>
-            <td>Drow time: {{lottery.drowTime.toString()}}</td>
-            <td><a ng-click="showDetails(lottery.id)" class="btn btn-primary">DETAILS</a></td>
-        </tr>
-    </tbody>
-</table>
+﻿<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">Lottery</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="">Dashoard</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <p class="navbar-text">
+                    <span class="glyphicon glyphicon-user"></span> Logged as {{username}}
+                </p>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    <h2>Lotteries</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Lottery name</th>
+                <th>Prize</th>
+                <th>Drow time</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="lottery in lotteries">
+                <td>{{lottery.lotteryName}}</td>
+                <td>{{lottery.prize}}</td>
+                <td>{{lottery.drowTime | parseDate}}</td>
+                <td><a ng-click="showDetails(lottery.id)" class="btn btn-primary">Check more</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
