@@ -1,7 +1,44 @@
-﻿<h2>LOTTERY DETAIL</h2>
-<h2>Logged as {{username}}</h2>
-<p>{{lotteryDetails.lotteryProperties.lotteryName}}</p>
-<p>{{lotteryDetails.lotteryProperties.prize}}</p>
-<p>{{lotteryDetails.lotteryProperties.drowTime.toString()}}</p><!--FIND OUT WHY NOT DISPLAY-->
-<p ng-repeat="user in lotteryDetails.usersList">{{user.userName}} Has won? {{user.isWinner ? 'Yes' : 'No'}}</p>
-<a ng-click="signUp(lotteryDetails.lotteryProperties.id)" class="btn btn-success"><i class="glyphicon glyphicon-send"></i> SIGN UP</a>
+﻿<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">Lottery</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="">Lottery details</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <p class="navbar-text">
+                    <span class="glyphicon glyphicon-user"></span> Logged as {{username}}
+                </p>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container well">
+    <div class="row details-header">
+        <div class="col-sm-6">
+            <p>{{lotteryDetails.lotteryProperties.lotteryName}}</p>
+        </div>
+        <div class="col-sm-6" style="text-align:right">
+            <p>{{lotteryDetails.lotteryProperties.drowTime | parseDate}}</p><!--FIND OUT WHY NOT DISPLAY-->
+        </div>
+    </div>
+    <h3>Prize: {{lotteryDetails.lotteryProperties.prize}}</h3>
+    <h3>Participants:</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Has won?</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="user in lotteryDetails.usersList">
+                <td>{{user.userName}}</td>
+                <td>{{user.isWinner ? 'Yes' : 'No'}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <a ng-click="signUp(lotteryDetails.lotteryProperties.id)" class="btn btn-success"><i class="glyphicon glyphicon-send"></i> SIGN UP</a>
+</div>
