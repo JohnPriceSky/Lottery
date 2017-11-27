@@ -18,17 +18,25 @@
 <div class="container">
     <h2>Lotteries</h2>
     <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Lottery name</th>
+                <th>Prize</th>
+                <th>Drow time</th>
+                <th>Details</th>
+            </tr>
+        </thead>
         <tbody>
             <tr ng-repeat="lottery in lotteries">
                 <td>{{lottery.lotteryName}}</td>
-                <td>Prize: {{lottery.prize}}</td>
-                <td>Drow time: {{lottery.drowTime | parseDate}}</td>
+                <td>{{lottery.prize}}</td>
+                <td>{{lottery.drowTime | parseDate}}</td>
                 <td><a ng-click="removeLottery(lottery.id)" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i> REMOVE</a></td>
             </tr>
             <tr class="form-group">
-                <td><input class="form-control" ng-model="lotteryName" type="text" /></td>
-                <td><input class="form-control" ng-model="prize" type="text" /></td>
-                <td><input class="form-control" ng-model="drowTime" type="datetime" /></td>
+                <td><input class="form-control" ng-model="lotteryName" type="text" placeholder="Lottery name"/></td>
+                <td><input class="form-control" ng-model="prize" type="text" placeholder="Prize" /></td>
+                <td><input class="form-control" ng-model="drowTime" type="datetime" placeholder="MM/DD/YYYY HH:mm" /></td>
                 <td><a ng-click="addLottery()" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i> ADD</a></td>
             </tr>
         </tbody>
