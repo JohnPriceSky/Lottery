@@ -1,6 +1,17 @@
-﻿app.controller('dashboard', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+﻿app.controller('dashboard', ['$scope', '$http', '$location', 'Hub', function ($scope, $http, $location, Hub) {
     $scope.username = userName;
     $scope.lotteries = {};
+
+    var notificationHub = new Hub('notificationHub', {
+        rootPath: host + '/signalr',
+        jsonp: true,
+        listeners: {
+            'notification': function (message) {
+                alert(message);
+            }
+        },
+        methods: ['notification']
+    });
 
     getLotteries();
 

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Lottery.WebApi.Models;
 using Microsoft.AspNet.SignalR;
 using Lottery.WebApi.Hubs;
+using Hangfire;
 
 namespace Lottery.WebApi.Services
 {
@@ -72,10 +73,9 @@ namespace Lottery.WebApi.Services
                 _lotteryEntities.Lottery.Add(newLottery);
                 await _lotteryEntities.SaveChangesAsync();
 
-                //var notificationHubContext = GlobalHost.ConnectionManager.GetHubContext<NotificationHub>();
-                //notificationHubContext.Clients.All.Notification("dupa");
-
-                return true;
+                var jobId = BackgroundJob.Schedule(
+                    methodCall: () => Jobs.DrowWinner(),
+                    delay: lottery.DrowTime - DateTime.Now);
             }
 
             return false;
@@ -118,6 +118,20 @@ namespace Lottery.WebApi.Services
                     Prize = l.Prize,
                     DrowTime = l.DrowTime
                 });
+        }
+    }
+
+    static class Jobs
+    {
+        public static void DrowWinner()
+        {
+            //using (var context = new LotteryEntities())
+            //{
+
+            //}
+
+            var notificationHubContext = GlobalHost.ConnectionManager.GetHubContext<NotificationHub>();
+            notificationHubContext.Clients.All.Notification("dupa");
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿var app = angular.module('app', ['ngRoute']);
+﻿var app = angular.module('app', ['ngRoute', 'SignalR']);
 var host = 'http://localhost:52574';
 var userId = 0;
 var userName = '';

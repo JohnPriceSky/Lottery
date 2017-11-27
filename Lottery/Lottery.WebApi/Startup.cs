@@ -1,4 +1,5 @@
 ﻿using Hangfire;
+using Microsoft.AspNet.SignalR;
 using Microsoft.Owin;
 using Owin;
 using System.Configuration;
@@ -10,7 +11,9 @@ namespace Lottery.WebApi
     {
         public void Configuration(IAppBuilder app)
         {
-            app.MapSignalR();
+            var config = new HubConfiguration();
+            config.EnableJSONP = true;
+            app.MapSignalR(config);
 
             GlobalConfiguration.Configuration.UseSqlServerStorage(ConfigurationManager.ConnectionStrings["Hangfire"].ConnectionString);
 
