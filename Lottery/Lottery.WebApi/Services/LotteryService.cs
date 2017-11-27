@@ -71,10 +71,10 @@ namespace Lottery.WebApi.Services
                 };
 
                 _lotteryEntities.Lottery.Add(newLottery);
-                await _lotteryEntities.SaveChangesAsync();
+                _lotteryEntities.SaveChanges();
 
                 var jobId = BackgroundJob.Schedule(
-                    methodCall: () => Jobs.DrowWinner(),
+                    methodCall: () => Jobs.DrowWinner(newLottery.Id),
                     delay: lottery.DrowTime - DateTime.Now);
             }
 
@@ -123,15 +123,43 @@ namespace Lottery.WebApi.Services
 
     static class Jobs
     {
-        public static void DrowWinner()
+        public static void DrowWinner(long lotteryId)
         {
-            //using (var context = new LotteryEntities())
-            //{
+            List<long> users;
 
-            //}
+            using (var context = new LotteryEntities())
+            {
+                users = context.LotteryUser.AsNoTracking()
+                    .Where(lu => lu.LotteryId == lotteryId)
+                    .Select(lu => lu.User)
+                    .Select(u => u.Id)
+                    .ToList();
+            }
+
+            if (users.Count < 1)
+                return;
+
+            var random = new Random();
+            var randomNumber = random.Next(0, users.Count);
+
+            var winnerId = users[randomNumber];
+
+            string winnerName;
+
+            using (var context = new LotteryEntities())
+            {
+                var winner = context.LotteryUser
+                    .FirstOrDefault(lu => lu.LotteryId == lotteryId && lu.UserId == winnerId);
+
+                winner.IsWinner = true;
+
+                winnerName = winner.User.UserName;
+
+                context.SaveChanges();
+            }
 
             var notificationHubContext = GlobalHost.ConnectionManager.GetHubContext<NotificationHub>();
-            notificationHubContext.Clients.All.Notification("dupa");
+            notificationHubContext.Clients.All.Notification($"{winnerName} has won lottery!!!");
         }
     }
 }
