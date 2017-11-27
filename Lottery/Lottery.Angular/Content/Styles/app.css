@@ -1,7 +1,26 @@
-﻿.navbar {
+﻿body {
+    background-color: silver;
+}
+
+.navbar {
     border-radius: 0;
+}
+
+.container {
+    border-radius: 8px;
+    background-color: white
 }
 
 .details-header {
     font-size: xx-large;
+}
+
+.login {
+    display: flex;
+    justify-content: center;
+    height: 85vh;
+}
+
+.prize{
+    color: royalblue
 }
